@@ -1,9 +1,0 @@
-.head-nav{
-    display: flex;
-    background-color: red;
-}
-.head-nav ul {
-    display: flex;
-    place-items: center;
-    
-}
