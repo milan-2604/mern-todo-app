@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { Link } from 'react-router-dom'
 function Navbar() {
   return (
 
@@ -11,44 +11,44 @@ function Navbar() {
         {/* Menu */}
         <ul className="flex gap-2 sm:gap-4 text-[10px] sm:text-sm font-medium flex-nowrap justify-end overflow-x-auto">
           <li>
-            <a
-              href="#"
+            <Link
+              to='/'
               className="inline-block px-2 py-1 sm:px-4 sm:py-2 bg-gray-800 rounded-md hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-md hover:shadow-lg whitespace-nowrap text-center"
             >
               HOME
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="#"
+            <Link
+              to='/aboutus'
               className="inline-block px-2 py-1 sm:px-4 sm:py-2 bg-gray-800 rounded-md hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-md hover:shadow-lg whitespace-nowrap text-center"
             >
               About Us
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="#"
+            <Link
+              to='/signup'
               className="inline-block px-2 py-1 sm:px-4 sm:py-2 bg-gray-800 rounded-md hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-md hover:shadow-lg whitespace-nowrap text-center"
             >
               Sign Up
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="#"
+            <Link
+              to='/signin'
               className="inline-block px-2 py-1 sm:px-4 sm:py-2 bg-gray-800 rounded-md hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-md hover:shadow-lg whitespace-nowrap text-center"
             >
               Sign In
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="#"
+            <Link
+              to='/logout'
               className="inline-block px-2 py-1 sm:px-4 sm:py-2 bg-gray-800 rounded-md hover:bg-red-600 hover:text-white transition-all duration-300 shadow-md hover:shadow-lg whitespace-nowrap text-center"
             >
               Logout
-            </a>
+            </Link>
           </li>
         </ul>
       </div>
