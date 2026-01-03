@@ -1,6 +1,52 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 function SignUp() {
+  const navigate = useNavigate();
+  const [formData,setFormData] = useState({
+    email: "",
+    username: "",
+    password: ""
+  })
+  const [error,setError] = useState("");
+
+  const handleChange = (e) =>{
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  const handleSubmit = async (e) =>{
+    e.preventDefault();
+
+    try {
+   
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/signup`,{
+          method: "POST",
+          headers:{
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(formData)
+        });
+
+        const data = await response.json();
+        if(!response.ok){
+          setError(data.message||"Sign Up Failed");
+          return;
+        }
+
+        console.log("user created: ",data);
+        navigate('/signin');
+
+      
+    } catch (error) {
+      setError("Server error") 
+    }
+  }
+
+
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-6 sm:p-8">
@@ -12,8 +58,13 @@ function SignUp() {
           Sign up to start managing your tasks
         </p>
 
+
+        {error && (
+          <p className="text-red-500 text-sm text-center mb-3">{error}</p>
+        )}
+
         {/* Form */}
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit}>
           {/* Email */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -22,6 +73,8 @@ function SignUp() {
             <input
               type="email"
               name="email"
+              value={formData.email}
+              onChange={handleChange}
               placeholder="you@example.com"
               className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
             />
@@ -35,6 +88,8 @@ function SignUp() {
             <input
               type="text"
               name="username"
+              value={formData.username}
+              onChange={handleChange}
               placeholder="your username"
               className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
             />
@@ -48,6 +103,8 @@ function SignUp() {
             <input
               type="password"
               name="password"
+              value={formData.password}
+              onChange={handleChange}
               placeholder="••••••••"
               className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
             />
