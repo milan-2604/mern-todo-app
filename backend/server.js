@@ -11,37 +11,36 @@ connectToDatabase();
 
 const app = express();
 
-// Rate limiter for login/signup
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // max 5 requests per IP
-  message: { message: "Too many login attempts. Try again later." },
-  standardHeaders: true,
-  legacyHeaders: false,
-});
-
-
-// Apply only to /signin (and optionally /signup)
-app.use('/api/v1/signin', authLimiter);
-app.use('/api/v1/signup', authLimiter);
-
+// 1️⃣ CORS must be before anything
 app.use(cors({
   origin: process.env.FRONTEND_URL,
   credentials: true 
 }));
 
-
-
+// 2️⃣ Body parser
 app.use(express.json());
 
+// 3️⃣ Cookie parser
 app.use(cookieParser());
 
-app.use('/api/v1',userRoute);
-app.use('/api/v2',listRoute);
+// 4️⃣ Rate limiter for login/signup
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5,
+  message: { message: "Too many login attempts. Try again later." },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
-const port = process.env.PORT;
+// Apply only to signin/signup routes
+app.use('/api/v1/signin', authLimiter);
+app.use('/api/v1/signup', authLimiter);
 
+// 5️⃣ Routes
+app.use('/api/v1', userRoute);
+app.use('/api/v2', listRoute);
 
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
-  console.log(`listening at ${port}`);
+  console.log(`Server running at ${port}`);
 });
