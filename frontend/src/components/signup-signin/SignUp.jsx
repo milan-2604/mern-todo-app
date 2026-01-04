@@ -19,6 +19,7 @@ function SignUp() {
 
   const handleSubmit = async (e) =>{
     e.preventDefault();
+    setError("");
 
     try {
    

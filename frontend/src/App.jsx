@@ -6,7 +6,7 @@ import Footer from "./components/footer/Footer";
 import AboutUs from "./components/aboutus/AboutUs";
 import SignUp from "./components/signup-signin/SignUp";
 import SignIn from "./components/signup-signin/SignIn";
-
+import Todo from "./components/todo/Todo";
 function App() {
   return (
     <Router>
@@ -17,6 +17,7 @@ function App() {
           <Route path="/aboutus" element={<AboutUs />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
+          <Route path="/todo" element = {<Todo />} />
         </Routes>
         <Footer />
       </div>

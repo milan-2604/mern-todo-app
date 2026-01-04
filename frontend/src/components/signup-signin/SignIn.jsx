@@ -1,6 +1,44 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 function SignIn() {
+  const navigate = useNavigate();
+  const [error,setError] = useState("");
+  const [formData,setFormData] = useState({
+    email: "" ,
+    password: ""
+  })
+  const handleChange = (e) =>{
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    })
+  }
+  const handleSubmit = async (e)=>{
+    e.preventDefault();
+    setError("");
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/signin`,{
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData),
+        credentials: "include"
+      }) 
+      const data = await response.json();
+      if(!response.ok){
+        setError(data.message||"Sign In Failed");
+        return;
+      }
+
+      console.log("Sign in successful",data);
+      navigate('/todo');
+
+    } catch (error) {
+      setError("Server error");
+    }
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-6 sm:p-8">
@@ -12,16 +50,22 @@ function SignIn() {
           Sign in to continue managing your tasks
         </p>
 
+           {error && (
+          <p className="text-red-500 text-sm text-center mb-3">{error}</p>
+        )}
+
         {/* Form */}
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit}>
           {/* Email or Username */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Email
             </label>
             <input
-              type="text"
+              type="email"
               name="email"
+              onChange={handleChange}
+              value={formData.email}
               placeholder="Enter your email"
               className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
             />
@@ -35,6 +79,8 @@ function SignIn() {
             <input
               type="password"
               name="password"
+              onChange={handleChange}
+              value={formData.password}
               placeholder="••••••••"
               className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
             />
