@@ -1,6 +1,7 @@
 const express = require("express");
 const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken');
 const router = express.Router();
 
 const userModel = require("../models/user.model");
@@ -73,7 +74,7 @@ router.post(
       if (!errors.isEmpty()) {
         return res.status(400).json({
           error: errors.array(),
-          message: "Invalid entries",
+          message: "Please enter a valid email and password",
         });
       }
 
@@ -83,21 +84,35 @@ router.post(
 
       if (!user) {
         return res.status(401).json({
-          message: "Email or Password is incorrect",
+          message: "Please enter a valid email and password",
         });
       }
 
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
         return res.status(401).json({
-          message: "Email or Password is incorrect",
+          message: "Please enter a valid email and password",
         });
       }
+
+      const token = jwt.sign({id:user._id},
+        process.env.JWT_SECRET,
+        {expiresIn: "1d"}
+      );
+
+      const isProd = process.env.NODE_ENV === "production";
+      res.cookie("token",token,{
+        httpOnly: true,
+        secure: isProd,
+        sameSite: isProd ? "none" :  "lax",
+        maxAge: 24*60*60*1000
+      });
 
       const userObj = user.toObject();
       delete userObj.password;
 
       res.status(200).json({
+        message: "Login successful",
         user: userObj,
       });
     } catch (error) {

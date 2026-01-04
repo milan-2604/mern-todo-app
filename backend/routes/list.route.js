@@ -3,27 +3,22 @@ const router = express.Router();
 
 const userModel = require("../models/user.model");
 const listModel = require("../models/list.model");
+const authMiddleWare = require("../middlewares/authMiddleware");
 
 //adding task
-router.post("/addTask", async (req, res) => {
+router.post("/addTask",authMiddleWare, async (req, res) => {
   try {
-    const { title, body, email } = req.body;
+    const { title, body } = req.body;
     if (!title || !body) {
       return res.status(400).json({
         message: "Title and Body cannot be empty",
       });
     }
-    const user = await userModel.findOne({ email });
-    if (!user) {
-      return res.status(400).json({
-        message: "user not found",
-      });
-    }
 
-    const task = await listModel.create({ title, body, user: user._id });
+    const task = await listModel.create({ title, body, user: req.user.id});
 
     await userModel.findOneAndUpdate(
-      { _id: user._id },
+      { _id: req.user.id},
       { $push: { list: task._id } }
     );
     res.status(201).json({
@@ -38,9 +33,9 @@ router.post("/addTask", async (req, res) => {
 });
 
 //updating task
-router.put("/updateTask/:id", async (req, res) => {
+router.put("/updateTask/:id", authMiddleWare ,async (req, res) => {
   try {
-    const { title, body, email } = req.body;
+    const { title, body, } = req.body;
 
     if (!title && !body) {
       return res.status(400).json({
@@ -48,19 +43,13 @@ router.put("/updateTask/:id", async (req, res) => {
       });
     }
 
-    const user = await userModel.findOne({ email });
-    if (!user) {
-      return res.status(404).json({
-        message: "user not found",
-      });
-    }
 
     const updatedData = {};
     if (title) updatedData.title = title;
     if (body) updatedData.body = body;
 
     const updatedTask = await listModel.findOneAndUpdate(
-      { _id: req.params.id, user: user._id },
+      { _id: req.params.id, user: req.user.id},
       updatedData,
       { new: true }
     );
@@ -81,15 +70,9 @@ router.put("/updateTask/:id", async (req, res) => {
 });
 
 //get Tasks
-router.get("/getTasks/:id", async (req, res) => {
+router.get("/getTasks", authMiddleWare,async (req, res) => {
   try {
-    const user = await userModel.findOne({ _id: req.params.id });
-    if (!user) {
-      return res.status(404).json({
-        message: "User not found",
-      });
-    }
-    const list = await listModel.find({ user: req.params.id }).sort({createdAt: -1});
+    const list = await listModel.find({ user: req.user.id }).sort({createdAt: -1});
     res.status(200).json({
       tasks: list,
       message: "Task fetching successful",
@@ -103,22 +86,15 @@ router.get("/getTasks/:id", async (req, res) => {
 
 
 //delete task
-router.delete('/deleteTask/:id',async (req,res)=>{
+router.delete('/deleteTask/:id',authMiddleWare,async (req,res)=>{
   try {
-    const {email} =req.body;
-    const user = await userModel.findOne({email});
-    if(!user){
-      return res.status(404).json({
-        message: "User not found"
-      })
-    }
-   const deletedTask = await listModel.findOneAndDelete({_id: req.params.id,user:user._id});
+   const deletedTask = await listModel.findOneAndDelete({_id: req.params.id,user:req.user.id});
    if(!deletedTask){
-    return res.status(400).json({
+    return res.status(404).json({
       message: "Task not found"
     })
    }
-   await userModel.findOneAndUpdate({_id: user._id},{$pull: {list: req.params.id}});
+   await userModel.findOneAndUpdate({_id: req.user.id},{$pull: {list: req.params.id}});
    res.status(200).json({
     deletedTask,
     message: "task deleted successfully"
