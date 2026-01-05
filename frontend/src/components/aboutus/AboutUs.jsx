@@ -1,48 +1,83 @@
 import React from "react";
 
 function AboutUs() {
+  const techStack = [
+    { name: "MongoDB", color: "text-green-500", bg: "bg-green-500/10" },
+    { name: "Express.js", color: "text-slate-300", bg: "bg-slate-300/10" },
+    { name: "React", color: "text-blue-400", bg: "bg-blue-400/10" },
+    { name: "Node.js", color: "text-emerald-400", bg: "bg-emerald-400/10" },
+  ];
+
   return (
-    <div className="w-full px-4 py-10 flex justify-center">
-      <div className="max-w-3xl bg-white rounded-2xl shadow-md p-6 sm:p-8 md:p-10">
-        <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-6">
-          About This Project
-        </h1>
+    <div className="relative flex-grow bg-slate-950 px-6 py-16 overflow-hidden">
+      {/* Background Decorative Glow */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none" />
+      
+      <div className="relative max-w-4xl mx-auto">
+        {/* Header Section */}
+        <div className="mb-12">
+          <div className="inline-block px-4 py-1 mb-4 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-400 text-xs font-bold uppercase tracking-widest">
+            Milestone Project #1
+          </div>
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight mb-6">
+            About This <span className="bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">Project</span>
+          </h1>
+          <p className="text-lg text-slate-400 leading-relaxed">
+            This application marks my transition from frontend explorer to full-stack developer. 
+            It is a complete MERN environment featuring a dedicated backend, secure database 
+            integration, and a responsive user interface.
+          </p>
+        </div>
 
-        <p className="text-gray-600 leading-relaxed mb-4">
-          This project is a full-stack Todo application built using the{" "}
-          <span className="font-medium text-gray-800">
-            MERN stack (MongoDB, Express.js, React, and Node.js)
-          </span>
-          . It marks my first complete MERN stack project, where I transitioned
-          from building frontend-only React applications to developing a full
-          application with a dedicated backend and database.
-        </p>
+        {/* Tech Stack Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+          {techStack.map((tech) => (
+            <div key={tech.name} className={`${tech.bg} border border-slate-800 p-4 rounded-2xl text-center shadow-sm`}>
+              <span className={`text-sm font-bold ${tech.color}`}>{tech.name}</span>
+            </div>
+          ))}
+        </div>
 
-        <p className="text-gray-600 leading-relaxed mb-8">
-          The goal of this project is to demonstrate my understanding of MERN
-          stack fundamentals, including RESTful APIs, frontend–backend
-          integration, state management, and basic authentication and CRUD
-          operations. Special focus was placed on writing clean, maintainable
-          code and following best practices commonly used in real-world
-          applications.
-        </p>
+        {/* MERN Architecture Concept */}
+        
 
-        <h3 className="text-2xl font-semibold text-gray-800 mb-4">About Me</h3>
+        <div className="grid md:grid-cols-2 gap-12 items-start">
+          {/* Mission Section */}
+          <div className="space-y-4">
+            <h3 className="text-2xl font-bold text-white flex items-center gap-2">
+              <span className="w-1.5 h-6 bg-purple-500 rounded-full"></span>
+              The Goal
+            </h3>
+            <p className="text-slate-400 leading-relaxed">
+              The objective was to master RESTful API architecture, state management, 
+              and CRUD operations. Special focus was placed on writing clean, scalable 
+              code and implementing secure authentication to mimic real-world production 
+              environments.
+            </p>
+          </div>
 
-        <p className="text-gray-600 leading-relaxed mb-4">
-          My name is{" "}
-          <span className="font-medium text-gray-800">Milan Oli</span>, and I am
-          an MCA student based in Dehradun, Uttarakhand. I have experience
-          building projects with React and am currently expanding my skill set
-          into full-stack development using the MERN stack.
-        </p>
+          {/* Bio Section */}
+          <div className="bg-slate-900/50 border border-slate-800 p-8 rounded-3xl backdrop-blur-sm">
+            <h3 className="text-2xl font-bold text-white mb-4">The Developer</h3>
+            <p className="text-slate-400 leading-relaxed mb-6">
+              My name is <span className="text-white font-semibold">Milan Oli</span>. 
+              Currently pursuing my MCA in Dehradun, Uttarakhand, I am passionate about 
+              bridging the gap between beautiful design and robust logic.
+            </p>
+            <div className="flex gap-4">
+               {/* Replace '#' with your actual links */}
+              <a href="https://github.com/milan-2604" className="text-sm font-bold text-purple-400 hover:text-purple-300 transition-colors">GitHub</a>
+              <a href="https://www.linkedin.com/in/milan2604/" className="text-sm font-bold text-purple-400 hover:text-purple-300 transition-colors">LinkedIn</a>
+            </div>
+          </div>
+        </div>
 
-        <p className="text-gray-600 leading-relaxed">
-          I enjoy learning by building real projects and continuously improving
-          my understanding of modern web development technologies. This project
-          represents an important milestone in my journey toward becoming a
-          proficient full-stack developer.
-        </p>
+        {/* Project Philosophy Footer */}
+        <div className="mt-20 pt-8 border-t border-slate-900 text-center">
+          <p className="text-slate-500 text-sm italic">
+            "Learning by building. One project at a time."
+          </p>
+        </div>
       </div>
     </div>
   );

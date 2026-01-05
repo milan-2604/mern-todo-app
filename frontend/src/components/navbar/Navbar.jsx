@@ -1,74 +1,87 @@
-import React from 'react'
-import { Link,useNavigate } from 'react-router-dom'
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+
+// We don't need Navbar.css anymore, everything is handled by Tailwind
+
 function Navbar() {
   const navigate = useNavigate();
+  const { isAuth, logout } = useAuth();
 
   const handleLogout = async () => {
-    try {
-      await fetch(`${import.meta.env.VITE_API_URL}/api/v1/logout`, {
-        method: "POST",
-        credentials: "include",
-      });
-
-      // redirect to signin page after logout
-      navigate('/signin');
-    } catch (err) {
-      console.error("Logout failed");
-    }
+    await logout();
+    navigate("/signin");
   };
+
+  // Reusable styles for navigation links to keep JSX clean
+  const linkStyle = "px-3 py-2 text-xs sm:text-sm font-medium rounded-lg transition-all duration-300 hover:bg-white/10 hover:text-white text-gray-300";
+  const activeBtnStyle = "px-4 py-2 text-xs sm:text-sm font-bold bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-500 transition-all duration-300";
+
   return (
+    <nav className="sticky top-0 z-50 w-full bg-slate-900/95 backdrop-blur-md border-b border-slate-800 shadow-lg">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 py-4">
+        
+        {/* Logo Section */}
+        <Link to="/" className="flex items-center gap-2 group">
+          <div className="text-2xl font-extrabold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent hover:opacity-80 transition-opacity">
+            TODO
+          </div>
+        </Link>
 
-      <nav className="w-full bg-gray-900 text-white shadow-md">
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
-        {/* Logo */}
-        <h3 className="text-lg sm:text-xl font-bold tracking-wide">TODO</h3>
+        {/* Navigation Links */}
+        <ul className="flex items-center gap-1 sm:gap-4">
+          
+          {/* Always visible links */}
+          <li>
+            <Link to="/" className={linkStyle}>
+              Home
+            </Link>
+          </li>
 
-        {/* Menu */}
-        <ul className="flex gap-2 sm:gap-4 text-[10px] sm:text-sm font-medium flex-nowrap justify-end overflow-x-auto">
           <li>
-            <Link
-              to='/'
-              className="inline-block px-2 py-1 sm:px-4 sm:py-2 bg-gray-800 rounded-md hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-md hover:shadow-lg whitespace-nowrap text-center"
-            >
-              HOME
+            <Link to="/aboutus" className={linkStyle}>
+              About
             </Link>
           </li>
-          <li>
-            <Link
-              to='/aboutus'
-              className="inline-block px-2 py-1 sm:px-4 sm:py-2 bg-gray-800 rounded-md hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-md hover:shadow-lg whitespace-nowrap text-center"
-            >
-              About Us
-            </Link>
-          </li>
-          <li>
-            <Link
-              to='/signup'
-              className="inline-block px-2 py-1 sm:px-4 sm:py-2 bg-gray-800 rounded-md hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-md hover:shadow-lg whitespace-nowrap text-center"
-            >
-              Sign Up
-            </Link>
-          </li>
-          <li>
-            <Link
-              to='/signin'
-              className="inline-block px-2 py-1 sm:px-4 sm:py-2 bg-gray-800 rounded-md hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-md hover:shadow-lg whitespace-nowrap text-center"
-            >
-              Sign In
-            </Link>
-          </li>
-          <li>
-            <Link
-                onClick={handleLogout}
-              className="inline-block px-2 py-1 sm:px-4 sm:py-2 bg-gray-800 rounded-md hover:bg-red-600 hover:text-white transition-all duration-300 shadow-md hover:shadow-lg whitespace-nowrap text-center"
-            >
-              Logout
-            </Link>
-          </li>
+
+          {/* 🔓 NOT LOGGED IN */}
+          {!isAuth && (
+            <>
+              <li>
+                <Link to="/signin" className={linkStyle}>
+                  Log In
+                </Link>
+              </li>
+              <li>
+                <Link to="/signup" className={activeBtnStyle}>
+                  Sign Up
+                </Link>
+              </li>
+            </>
+          )}
+
+          {/* 🔐 LOGGED IN */}
+          {isAuth && (
+            <>
+              <li>
+                <Link to="/todo" className={`${linkStyle} text-blue-400`}>
+                  My List
+                </Link>
+              </li>
+              <li>
+                <button 
+                  onClick={handleLogout} 
+                  className="px-3 py-2 text-xs sm:text-sm font-medium text-red-400 border border-red-500/30 rounded-lg hover:bg-red-500 hover:text-white transition-all duration-300"
+                >
+                  Logout
+                </button>
+              </li>
+            </>
+          )}
         </ul>
       </div>
     </nav>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;
