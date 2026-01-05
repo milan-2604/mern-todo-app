@@ -6,6 +6,7 @@ const router = express.Router();
 
 const userModel = require("../models/user.model");
 
+
 router.post(
   "/signup",
   [
@@ -122,5 +123,21 @@ router.post(
     }
   }
 );
+
+
+router.post("/logout", (req, res) => {
+  const isProd = process.env.NODE_ENV === "production";
+
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: isProd,
+    sameSite: isProd ? "none" : "lax",
+  });
+
+  res.status(200).json({
+    message: "Logout successful",
+  });
+});
+
 
 module.exports = router;
