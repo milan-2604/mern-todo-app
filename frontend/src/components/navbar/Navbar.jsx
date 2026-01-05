@@ -2,7 +2,6 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
-// We don't need Navbar.css anymore, everything is handled by Tailwind
 
 function Navbar() {
   const navigate = useNavigate();
@@ -44,7 +43,7 @@ function Navbar() {
             </Link>
           </li>
 
-          {/* 🔓 NOT LOGGED IN */}
+          {/* NOT LOGGED IN */}
           {!isAuth && (
             <>
               <li>
@@ -60,7 +59,7 @@ function Navbar() {
             </>
           )}
 
-          {/* 🔐 LOGGED IN */}
+          {/* LOGGED IN */}
           {isAuth && (
             <>
               <li>

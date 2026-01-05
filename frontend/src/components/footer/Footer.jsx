@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom'; // Importing Link in case you want internal links
+import { Link } from 'react-router-dom'; 
 
 function Footer() {
   return (
@@ -23,7 +23,7 @@ function Footer() {
             Stay organized. Stay productive.
           </p>
           
-          {/* Optional: Placeholder Legal Links for a professional look */}
+         
           <div className="flex gap-4 text-xs text-slate-600 font-medium">
             <span className="hover:text-blue-400 cursor-pointer transition-colors">Privacy Policy</span>
             <span className="hover:text-blue-400 cursor-pointer transition-colors">Terms of Service</span>

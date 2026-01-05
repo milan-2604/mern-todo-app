@@ -65,21 +65,20 @@ function AboutUs() {
               bridging the gap between beautiful design and robust logic.
             </p>
             <div className="flex gap-4">
-               {/* Replace '#' with your actual links */}
               <a href="https://github.com/milan-2604" className="text-sm font-bold text-purple-400 hover:text-purple-300 transition-colors">GitHub</a>
               <a href="https://www.linkedin.com/in/milan2604/" className="text-sm font-bold text-purple-400 hover:text-purple-300 transition-colors">LinkedIn</a>
             </div>
           </div>
         </div>
 
-        {/* Project Philosophy Footer */}
-        <div className="mt-20 pt-8 border-t border-slate-900 text-center">
-          <p className="text-slate-500 text-sm italic">
+    {/* Project Philosophy Closing (Simplified) */}
+        <div className="mt-24 text-center">
+          <p className="text-slate-500 text-sm font-medium tracking-widest uppercase opacity-50">
             "Learning by building. One project at a time."
           </p>
         </div>
       </div>
-    </div>
+    </div> 
   );
 }
 

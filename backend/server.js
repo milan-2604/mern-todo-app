@@ -10,20 +10,21 @@ const connectToDatabase = require("./database/db");
 connectToDatabase();
 
 const app = express();
+app.set('trust proxy', 1)
 
-// 1️⃣ CORS must be before anything
+// CORS must be before anything
 app.use(cors({
   origin: process.env.FRONTEND_URL,
   credentials: true 
 }));
 
-// 2️⃣ Body parser
+// Body parser
 app.use(express.json());
 
-// 3️⃣ Cookie parser
+// Cookie parser
 app.use(cookieParser());
 
-// 4️⃣ Rate limiter for login/signup
+// Rate limiter for login/signup
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 5,
@@ -36,7 +37,7 @@ const authLimiter = rateLimit({
 app.use('/api/v1/signin', authLimiter);
 app.use('/api/v1/signup', authLimiter);
 
-// 5️⃣ Routes
+// Routes
 app.use('/api/v1', userRoute);
 app.use('/api/v2', listRoute);
 
