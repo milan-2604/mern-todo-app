@@ -11,12 +11,14 @@ export const AuthProvider = ({ children }) => {
   const checkAuth = async () => {
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/v2/getTasks`,
+        `${import.meta.env.VITE_API_URL}/api/v1/me`,
         { credentials: "include" }
       );
       setIsAuth(res.ok);
+      return res.ok;
     } catch {
       setIsAuth(false);
+      return false;
     } finally {
       setLoading(false);
     }

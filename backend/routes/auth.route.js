@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 
 const userModel = require("../models/user.model");
-
+const authMiddleWare = require("../middlewares/authMiddleware");
 
 router.post(
   "/signup",
@@ -101,11 +101,14 @@ router.post(
         {expiresIn: "1d"}
       );
 
-      const isProd = process.env.NODE_ENV === "production";
+      // const isProd = process.env.NODE_ENV === "production";
       res.cookie("token",token,{
         httpOnly: true,
-        secure: isProd,
-        sameSite: isProd ? "none" :  "lax",
+        // secure: isProd,
+        secure: true,
+        // sameSite: isProd ? "none" :  "lax",
+        sameSite: "none",
+        partitioned: true, // Add this for mobile browser compatibility
         maxAge: 24*60*60*1000
       });
 
@@ -126,18 +129,29 @@ router.post(
 
 
 router.post("/logout", (req, res) => {
-  const isProd = process.env.NODE_ENV === "production";
+  // const isProd = process.env.NODE_ENV === "production";
 
   res.clearCookie("token", {
     httpOnly: true,
-    secure: isProd,
-    sameSite: isProd ? "none" : "lax",
+    // secure: isProd,
+    secure: true,
+    // sameSite: isProd ? "none" : "lax",
+    sameSite: "none",
+    partitioned: true, // Add this for mobile browser compatibility
   });
 
   res.status(200).json({
     message: "Logout successful",
   });
 });
+
+router.get("/me", authMiddleWare, (req, res) => {
+  res.status(200).json({
+    isAuth: true,
+    user: req.user, // optional
+  });
+});
+
 
 
 module.exports = router;
