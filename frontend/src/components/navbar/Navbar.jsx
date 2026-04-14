@@ -23,7 +23,7 @@ function Navbar() {
         {/* Logo Section */}
         <Link to="/" className="flex items-center gap-2 group">
           <div className="text-2xl font-extrabold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent hover:opacity-80 transition-opacity">
-            TODO
+           PLANORA 
           </div>
         </Link>
 

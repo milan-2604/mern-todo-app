@@ -10,7 +10,7 @@ function Footer() {
         {/* Brand & Copyright Section */}
         <div className="text-center md:text-left">
           <p className="text-sm font-medium">
-            © 2026 <span className="font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">TODO</span>.
+            © 2026 <span className="font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">PLANORA</span>.
           </p>
           <p className="text-xs text-slate-500 mt-1">
             Building better habits, one task at a time.
